@@ -1,0 +1,229 @@
+/* FONT IMPORTS - From Google Fonts */
+/* 'Cinzel' for titles (dramatic, fantasy) */
+/* 'Jura' for body/UI text (minimalist, sci-fi) */
+
+/* --- Universal Styles & Variables --- */
+:root {
+    --primary-color: #0a0a0a; /* Near black for the main background */
+    --secondary-color: #1a1a1a; /* Dark gray for cards and panels */
+    --accent-color: #b8860b; /* A dark, muted gold for highlights */
+    --glow-color: #daa520; /* A brighter gold for glowing effects */
+    --text-color: #a0a0a0; /* Light gray for readable text */
+    --title-font: 'Cinzel', serif;
+    --body-font: 'Jura', sans-serif;
+}
+
+body {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    font-family: var(--body-font);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* --- Hero Section --- */
+.hero-section {
+    position: relative;
+    height: 100vh;
+    background-image: url('https://via.placeholder.com/1920x1080/000000/000000?text=Your+Ominous+Concept+Art+Here'); /* !!! REPLACE THIS URL !!! */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Creates a parallax effect */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.9) 100%);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.server-title {
+    font-family: var(--title-font);
+    font-size: 5rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.7), 0 0 25px var(--glow-color);
+    margin: 0;
+}
+
+.server-subtitle {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--text-color);
+    margin-top: 10px;
+}
+
+.cta-button {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 15px 35px;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    text-decoration: none;
+    font-family: var(--title-font);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px var(--accent-color);
+}
+
+.cta-button:hover {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    box-shadow: 0 0 20px var(--glow-color);
+    text-shadow: none;
+}
+
+
+/* --- Navigation --- */
+.main-nav {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background-color: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #222;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+}
+
+.main-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.main-nav a {
+    display: block;
+    padding: 20px 25px;
+    color: var(--text-color);
+    text-decoration: none;
+    font-family: var(--body-font);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.main-nav a:hover {
+    color: var(--glow-color);
+    text-shadow: 0 0 5px var(--glow-color);
+}
+
+.login-button {
+    border-left: 1px solid #222;
+}
+
+/* --- Store --- */
+.store-container {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 20px;
+}
+
+.store-container h2 {
+    font-family: var(--title-font);
+    font-size: 3rem;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 50px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.product-card {
+    background-color: var(--secondary-color);
+    border: 1px solid #2a2a2a;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px var(--accent-color);
+}
+
+.product-image-container {
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.product-overlay {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.7);
+    padding: 8px 15px;
+    border-top-left-radius: 5px;
+}
+
+.product-price {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.product-info {
+    padding: 20px;
+}
+
+.product-title {
+    font-family: var(--title-font);
+    font-size: 1.5rem;
+    color: #fff;
+    margin: 0 0 10px 0;
+}
+
+.product-description {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.add-to-cart-button {
+    background-color: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 10px 20px;
+    width: 100%;
+    cursor: pointer;
+    font-family: var(--body-font);
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.add-to-cart-button:hover {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    box-shadow: 0 0 10px var(--glow-color);
+}
+
+/* --- Footer --- */
+.main-footer {
+    text-align: center;
+    padding: 30px;
+    margin-top: 50px;
+    border-top: 1px solid #222;
+    font-size: 0.8rem;
+    color: #666;
+}

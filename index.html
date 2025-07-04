@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deltcraft - A New Realm Awaits</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS for theme and animations -->
+    <link href="style.css">
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Applying the dramatic, medieval font */
+        .font-cinzel {
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Background inspired by Beksiński & James Jean - a dark, atmospheric, and slightly surreal landscape */
+        .background-art {
+            background-image: url('https://placehold.co/2000x3000/0a0a0a/1f1f1f?text=');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        .background-art::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.95) 0%, rgba(10, 10, 10, 0.8) 50%, rgba(10, 10, 10, 0.95) 100%);
+            z-index: 1;
+        }
+
+        /* Glassmorphism effect for cards and nav */
+        .glass-effect {
+            background: rgba(16, 16, 16, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Floating vaporwave voxel elements - subtle animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Mucha-inspired decorative borders for sections */
+        .section-container {
+            border: 2px solid;
+            border-image-slice: 1;
+            border-width: 2px;
+            border-image-source: linear-gradient(to right, #4a044e, #a855f7, #4a044e);
+            position: relative;
+            padding: 4rem 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .section-container::before, .section-container::after {
+            content: '✧';
+            font-family: 'Cinzel', serif;
+            color: #a855f7;
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.7;
+        }
+        
+        .section-container::before { top: -1rem; left: 1rem; }
+        .section-container::after { bottom: -1rem; right: 1rem; }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #a855f7; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c084fc; }
+
+        /* Nav link hover effect */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #c084fc;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #a855f7;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Button style */
+        .btn-primary {
+            background: linear-gradient(45deg, #8b5cf6, #a855f7);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+        }
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.7);
+        }
+        .btn-primary:disabled {
+            background: #58555e;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* AI Feature Specific Styles */
+        .ai-input {
+            background-color: rgba(0,0,0,0.3);
+            border: 1px solid #4a044e;
+            color: #e0e0e0;
+        }
+        .ai-input:focus {
+            outline: none;
+            border-color: #a855f7;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+        }
+        .ai-output {
+            background-color: rgba(0,0,0,0.2);
+            border-left: 3px solid #a855f7;
+            min-height: 100px;
+            font-style: italic;
+            color: #c084fc;
+        }
+        
+        /* Loading Spinner */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #a855f7;
+            animation: spin 1s linear infinite;
+        }
+
+    </style>
+</head>
+<body class="background-art">
+
+    <div class="relative z-10">
+        <!-- Header / Menu -->
+        <header id="header" class="fixed top-0 left-0 right-0 z-50 glass-effect transition-all duration-300">
+            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <a href="#hero" class="text-3xl font-bold font-cinzel tracking-widest text-white">DELTCRAFT</a>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#about" class="nav-link text-lg">About</a>
+                    <a href="#features" class="nav-link text-lg">Features</a>
+                    <a href="#gallery" class="nav-link text-lg">Gallery</a>
+                    <a href="#oracle" class="nav-link text-lg">The Oracle</a>
+                    <a href="#join" class="nav-link text-lg">How to Join</a>
+                </div>
+                <a href="#join-server" class="hidden md:block btn-primary text-white font-bold py-2 px-6 rounded-lg">JOIN SERVER</a>
+                <button id="mobile-menu-btn" class="md:hidden text-white text-3xl">
+                    &#9776;
+                </button>
+            </nav>
+        </header>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden fixed inset-0 bg-black bg-opacity-90 z-40 md:hidden">
+            <div class="flex flex-col items-center justify-center h-full space-y-8">
+                <a href="#about" class="nav-link text-2xl" onclick="closeMenu()">About</a>
+                <a href="#features" class="nav-link text-2xl" onclick="closeMenu()">Features</a>
+                <a href="#gallery" class="nav-link text-2xl" onclick="closeMenu()">Gallery</a>
+                <a href="#oracle" class="nav-link text-2xl" onclick="closeMenu()">The Oracle</a>
+                <a href="#join" class="nav-link text-2xl" onclick="closeMenu()">How to Join</a>
+                <a href="#join-server" class="mt-4 btn-primary text-white font-bold py-3 px-8 rounded-lg text-xl" onclick="closeMenu()">JOIN SERVER</a>
+            </div>
+        </div>
+
+        <main class="container mx-auto px-6 pt-24">
+
+            <!-- Hero Section -->
+            <section id="hero" class="min-h-screen flex flex-col items-center justify-center text-center -mt-24">
+                <div class="floating-element">
+                    <h1 class="text-6xl md:text-8xl lg:text-9xl font-black font-cinzel text-white drop-shadow-[0_5px_15px_rgba(168,85,247,0.4)]">
+                        DELTCRAFT
+                    </h1>
+                </div>
+                <p class="mt-4 text-xl md:text-2xl text-gray-300 max-w-3xl tracking-wider">
+                    Where shadows whisper ancient tales and forgotten kingdoms rise from digital dust. Dare to explore?
+                </p>
+                <a href="#about" class="mt-12 animate-bounce">
+                    <svg class="w-10 h-10 text-purple-400" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                    </svg>
+                </a>
+            </section>
+
+            <!-- About Section -->
+            <section id="about" class="py-20">
+                <div class="section-container glass-effect rounded-2xl">
+                    <h2 class="text-4xl md:text-5xl font-bold font-cinzel text-center mb-12 text-purple-300">The Legend of Delt</h2>
+                    <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                        <div class="md:w-1/2">
+                            <img src="https://placehold.co/600x800/1a1a1a/a855f7?text=Character+Concept" alt="Concept art of a mysterious Deltcraft character" class="rounded-xl shadow-lg shadow-purple-900/20 w-full h-auto object-cover">
+                        </div>
+                        <div class="md:w-1/2 text-lg text-gray-300 space-y-4">
+                            <p>In the beginning, there was only the Void and the Echo. From the silence, Delt was woven—a realm of stark contrasts and haunting beauty. Its mountains pierce skies painted in hues of twilight, and its forests guard secrets older than time itself.</p>
+                            <p>This is not a land for the faint of heart. It is a world shaped by conflict, magic, and the remnants of a divine war. Every ruin tells a story, every artifact holds power, and every shadow could be a friend or a devastating foe.</p>
+                            <p class="font-bold text-purple-300">Deltcraft is more than a server; it's a narrative experience. We invite you, the architect of your own destiny, to build, to conquer, and to unravel the deep, dark lore that underpins this world.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section id="features" class="py-20">
+                 <h2 class="text-4xl md:text-5xl font-bold font-cinzel text-center mb-16 text-purple-300">What Awaits You</h2>
+                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Feature Card 1 -->
+                    <div class="glass-effect p-8 rounded-xl border border-purple-800/30 text-center hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-900/30 transition-all duration-300 transform hover:-translate-y-2">
+                         <h3 class="text-2xl font-bold font-cinzel mb-4 text-purple-400">Custom Lore & Quests</h3>
+                         <p class="text-gray-400">Embark on epic, narrative-driven quests that reveal the server's dark history. Your choices will shape the world.</p>
+                    </div>
+                     <!-- Feature Card 2 -->
+                    <div class="glass-effect p-8 rounded-xl border border-purple-800/30 text-center hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-900/30 transition-all duration-300 transform hover:-translate-y-2">
+                         <h3 class="text-2xl font-bold font-cinzel mb-4 text-purple-400">Unique Bosses & Mobs</h3>
+                         <p class="text-gray-400">Face terrifying, custom-coded creatures that guard the realm's most valuable treasures. Teamwork is essential for survival.</p>
+                    </div>
+                     <!-- Feature Card 3 -->
+                    <div class="glass-effect p-8 rounded-xl border border-purple-800/30 text-center hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-900/30 transition-all duration-300 transform hover:-translate-y-2">
+                         <h3 class="text-2xl font-bold font-cinzel mb-4 text-purple-400">Player-Driven Economy</h3>
+                         <p class="text-gray-400">Master trades, establish merchant guilds, and control the flow of rare resources in a dynamic, player-centric market.</p>
+                    </div>
+                     <!-- Feature Card 4 -->
+                    <div class="glass-effect p-8 rounded-xl border border-purple-800/30 text-center hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-900/30 transition-all duration-300 transform hover:-translate-y-2">
+                         <h3 class="text-2xl font-bold font-cinzel mb-4 text-purple-400">Enhanced Survival</h3>
+                         <p class="text-gray-400">Experience a challenging survival mode with custom crafting recipes, new biomes, and immersive mechanics.</p>
+                    </div>
+                     <!-- Feature Card 5 -->
+                    <div class="glass-effect p-8 rounded-xl border border-purple-800/30 text-center hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-900/30 transition-all duration-300 transform hover:-translate-y-2">
+                         <h3 class="text-2xl font-bold font-cinzel mb-4 text-purple-400">Magic & Runes</h3>
+                         <p class="text-gray-400">Discover and master ancient runes to wield powerful magic, from protective wards to destructive spells.</p>
+                    </div>
+                    <!-- Feature Card 6 -->
+                    <div class="glass-effect p-8 rounded-xl border border-purple-800/30 text-center hover:border-purple-500/50 hover:shadow-2xl hover:shadow-purple-900/30 transition-all duration-300 transform hover:-translate-y-2">
+                         <h3 class="text-2xl font-bold font-cinzel mb-4 text-purple-400">Stunning Worldgen</h3>
+                         <p class="text-gray-400">Explore a breathtaking, hand-crafted world with awe-inspiring landscapes and hidden dungeons to discover.</p>
+                    </div>
+                 </div>
+            </section>
+
+            <!-- Gallery Section -->
+            <section id="gallery" class="py-20">
+                <h2 class="text-4xl md:text-5xl font-bold font-cinzel text-center mb-16 text-purple-300">Visions of Delt</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="grid gap-4">
+                        <div><img class="h-auto max-w-full rounded-lg shadow-lg shadow-purple-900/20 transition-transform duration-300 hover:scale-105" src="https://placehold.co/800x1200/1a1a1a/a855f7?text=Cursed+Forest" alt="Cursed Forest in Deltcraft"></div>
+                        <div><img class="h-auto max-w-full rounded-lg shadow-lg shadow-purple-900/20 transition-transform duration-300 hover:scale-105" src="https://placehold.co/800x600/1a1a1a/a855f7?text=Floating+Islands" alt="Floating Islands in Deltcraft"></div>
+                    </div>
+                    <div class="grid gap-4">
+                        <div><img class="h-auto max-w-full rounded-lg shadow-lg shadow-purple-900/20 transition-transform duration-300 hover:scale-105" src="https://placehold.co/800x600/1a1a1a/a855f7?text=Sunken+City" alt="Sunken City in Deltcraft"></div>
+                        <div><img class="h-auto max-w-full rounded-lg shadow-lg shadow-purple-900/20 transition-transform duration-300 hover:scale-105" src="https://placehold.co/800x1200/1a1a1a/a855f7?text=Runic+Altar" alt="Runic Altar in Deltcraft"></div>
+                    </div>
+                    <div class="grid gap-4">
+                        <div><img class="h-auto max-w-full rounded-lg shadow-lg shadow-purple-900/20 transition-transform duration-300 hover:scale-105" src="https://placehold.co/800x1200/1a1a1a/a855f7?text=Nether+Citadel" alt="Nether Citadel in Deltcraft"></div>
+                        <div><img class="h-auto max-w-full rounded-lg shadow-lg shadow-purple-900/20 transition-transform duration-300 hover:scale-105" src="https://placehold.co/800x600/1a1a1a/a855f7?text=Player+Castle" alt="A grand player-built castle in Deltcraft"></div>
+                    </div>
+                    <div class="grid gap-4">
+                        <div><img class="h-auto max-w-full rounded-lg shadow-lg shadow-purple-900/20 transition-transform duration-300 hover:scale-105" src="https://placehold.co/800x600/1a1a1a/a855f7?text=Dragon's+Peak" alt="Dragon's Peak mountain range in Deltcraft"></div>
+                        <div><img class="h-auto max-w-full rounded-lg shadow-lg shadow-purple-900/20 transition-transform duration-300 hover:scale-105" src="https://placehold.co/800x1200/1a1a1a/a855f7?text=The+Abyss" alt="A terrifying abyss in Deltcraft"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Oracle (AI) Section -->
+            <section id="oracle" class="py-20">
+                <div class="section-container glass-effect rounded-2xl">
+                    <h2 class="text-4xl md:text-5xl font-bold font-cinzel text-center mb-4 text-purple-300">The Oracle's Chamber</h2>
+                    <p class="text-center text-gray-400 mb-12 max-w-2xl mx-auto">Gaze into the void and let the echoes of fate shape your story.</p>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <!-- Backstory Generator -->
+                        <div class="glass-effect p-8 rounded-xl border border-purple-800/30">
+                            <h3 class="text-2xl font-bold font-cinzel mb-4 text-purple-400 text-center">Forge Your Legend</h3>
+                            <p class="text-gray-400 mb-6 text-center text-sm">Give the Oracle a name and a whisper of your essence to weave your tale.</p>
+                            <div class="space-y-4">
+                                <input id="char-name" type="text" placeholder="Character Name..." class="w-full p-3 rounded-lg ai-input transition-all">
+                                <input id="char-keywords" type="text" placeholder="Keywords (e.g., haunted knight, lost mage)..." class="w-full p-3 rounded-lg ai-input transition-all">
+                                <button id="generate-backstory-btn" class="w-full btn-primary text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center gap-2">
+                                    <span class="sparkle">✨</span> Consult the Oracle
+                                </button>
+                                <div id="backstory-output" class="p-4 rounded-lg ai-output transition-all flex items-center justify-center">
+                                    <span class="text-gray-500">Your legend awaits...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rumor Generator -->
+                        <div class="glass-effect p-8 rounded-xl border border-purple-800/30">
+                             <h3 class="text-2xl font-bold font-cinzel mb-4 text-purple-400 text-center">Whispers from the Void</h3>
+                            <p class="text-gray-400 mb-6 text-center text-sm">Listen closely... the realm is always speaking. What new adventures are rumored to exist?</p>
+                            <div class="space-y-4">
+                                <button id="generate-rumor-btn" class="w-full btn-primary text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center gap-2">
+                                    <span class="sparkle">✨</span> Uncover a Rumor
+                                </button>
+                                <div id="rumor-output" class="p-4 rounded-lg ai-output transition-all flex items-center justify-center">
+                                    <span class="text-gray-500">The void is silent... for now.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Join Tutorial Section -->
+            <section id="join" class="py-20">
+                 <div class="section-container glass-effect rounded-2xl">
+                    <h2 class="text-4xl md:text-5xl font-bold font-cinzel text-center mb-12 text-purple-300">Answer the Call</h2>
+                    <div class="max-w-4xl mx-auto space-y-8">
+                        <div class="flex items-start space-x-4">
+                            <div class="text-3xl font-black font-cinzel text-purple-400">1</div>
+                            <div>
+                                <h3 class="text-2xl font-bold">Launch Minecraft</h3>
+                                <p class="text-gray-400">Start your Minecraft: Java Edition client. We recommend the latest version for the best experience.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="text-3xl font-black font-cinzel text-purple-400">2</div>
+                            <div>
+                                <h3 class="text-2xl font-bold">Navigate to Multiplayer</h3>
+                                <p class="text-gray-400">From the main menu, click on the "Multiplayer" button.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="text-3xl font-black font-cinzel text-purple-400">3</div>
+                            <div>
+                                <h3 class="text-2xl font-bold">Add Server</h3>
+                                <p class="text-gray-400">Click "Add Server" and enter "Deltcraft" as the server name. For the server address, use the IP below.</p>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </section>
+
+            <!-- Join Server (CTA) -->
+            <section id="join-server" class="text-center py-20">
+                <h2 class="text-3xl font-bold font-cinzel mb-4">The Gates are Open</h2>
+                <p class="text-lg text-gray-400 mb-6">Your legend begins now.</p>
+                <div class="inline-block glass-effect p-4 rounded-lg border border-purple-800/50">
+                    <p class="text-2xl font-mono tracking-widest text-white" id="server-ip">play.deltcraft.net</p>
+                </div>
+                <button onclick="copyToClipboard()" class="mt-4 btn-primary text-white font-bold py-3 px-8 rounded-lg text-lg">
+                    Copy IP
+                </button>
+                <div id="copy-message" class="mt-4 text-green-400 opacity-0 transition-opacity duration-300">IP Address Copied!</div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="py-8 border-t border-gray-800/50">
+            <div class="container mx-auto px-6 text-center text-gray-500">
+                <p>&copy; 2025 Deltcraft. All Rights Reserved.</p>
+                <p class="text-sm mt-2">Not an official Minecraft product. Not approved by or associated with Mojang.</p>
+                <div class="flex justify-center space-x-6 mt-4">
+                    <a href="#" class="hover:text-purple-400 transition-colors">Discord</a>
+                    <a href="#" class="hover:text-purple-400 transition-colors">Twitter</a>
+                    <a href="#" class="hover:text-purple-400 transition-colors">Artstation</a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // --- Mobile Menu Logic ---
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        function closeMenu() {
+            mobileMenu.classList.add('hidden');
+        }
+
+        // --- Navbar transparency on scroll ---
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('bg-opacity-80', 'backdrop-blur-md');
+            } else {
+                header.classList.remove('bg-opacity-80', 'backdrop-blur-md');
+            }
+        });
+
+        // --- Clipboard Copy Logic ---
+        function copyToClipboard() {
+            const ip = document.getElementById('server-ip').innerText;
+            const message = document.getElementById('copy-message');
+
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = ip;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            
+            try {
+                document.execCommand('copy');
+                message.style.opacity = '1';
+                setTimeout(() => { message.style.opacity = '0'; }, 2000);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                navigator.clipboard.writeText(ip).then(() => {
+                    message.style.opacity = '1';
+                    setTimeout(() => { message.style.opacity = '0'; }, 2000);
+                }).catch(err => {
+                    console.error('Fallback clipboard copy failed: ', err);
+                    alert('Failed to copy IP. Please copy it manually.');
+                });
+            }
+
+            document.body.removeChild(tempTextArea);
+        }
+
+        // --- Smooth scrolling for all anchor links ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // --- Gemini API Integration ---
+
+        // The loading spinner HTML
+        const loadingSpinner = `<div class="spinner w-8 h-8 rounded-full"></div>`;
+
+        /**
+         * Generic function to call the Gemini API
+         * @param {string} prompt - The prompt to send to the API.
+         * @param {HTMLElement} outputElement - The element to display the result in.
+         * @param {HTMLElement} buttonElement - The button that triggered the call.
+         */
+        async function callGemini(prompt, outputElement, buttonElement) {
+            // Leave API Key blank, it will be automatically provided by the environment
+            const apiKey = "AIzaSyAYde-TPEi2mBIHSPodAaG3fJ7LFIbSQWo"; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            // Disable button and show loader
+            buttonElement.disabled = true;
+            outputElement.innerHTML = loadingSpinner;
+            outputElement.classList.add('flex', 'items-center', 'justify-center');
+
+            const payload = {
+                contents: [{
+                    role: "user",
+                    parts: [{ text: prompt }]
+                }]
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status} ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                
+                let text = "The Oracle is silent. Perhaps the stars are not aligned. Try again.";
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    text = result.candidates[0].content.parts[0].text;
+                }
+                
+                // Format the output text (replace newlines with breaks)
+                outputElement.innerHTML = `<p>${text.replace(/\n/g, '<br>')}</p>`;
+
+            } catch (error) {
+                console.error("Gemini API call failed:", error);
+                outputElement.innerHTML = `<p class="text-red-400">An error occurred while consulting the Oracle. Please check the console.</p>`;
+            } finally {
+                // Re-enable button and remove special flex styling
+                buttonElement.disabled = false;
+                outputElement.classList.remove('flex', 'items-center', 'justify-center');
+            }
+        }
+        
+        // Event Listener for Backstory Generator
+        const backstoryBtn = document.getElementById('generate-backstory-btn');
+        backstoryBtn.addEventListener('click', () => {
+            const charName = document.getElementById('char-name').value || "A nameless wanderer";
+            const charKeywords = document.getElementById('char-keywords').value || "a mysterious past";
+            const outputElement = document.getElementById('backstory-output');
+
+            const prompt = `
+                You are a master storyteller for Deltcraft, a dark, medieval fantasy Minecraft server. 
+                The world is one of stark contrasts and haunting beauty, shaped by conflict, magic, and remnants of a divine war. 
+                Generate a short, evocative character backstory (around 80-100 words) for a character named "${charName}" who is described as "${charKeywords}". 
+                The tone should be gothic, mysterious, and fit for a hero destined to build, conquer, and unravel deep secrets. 
+                Do not break character. Speak as a wise, ancient oracle.
+            `;
+            
+            callGemini(prompt, outputElement, backstoryBtn);
+        });
+
+        // Event Listener for Rumor Generator
+        const rumorBtn = document.getElementById('generate-rumor-btn');
+        rumorBtn.addEventListener('click', () => {
+            const outputElement = document.getElementById('rumor-output');
+
+            const prompt = `
+                You are the Oracle of Deltcraft, a Minecraft server with a dark, medieval fantasy theme. 
+                Generate one short, tantalizing quest hook or rumor (1-2 sentences) that a player might overhear in a shadowy tavern or from a cryptic wanderer. 
+                It should hint at danger, treasure, or a forgotten secret within the world of Delt. 
+                Focus on themes like custom bosses, unique mobs, hidden dungeons, powerful artifacts, or player-driven economy secrets. 
+                Do not break character. Be brief and mysterious.
+            `;
+
+            callGemini(prompt, outputElement, rumorBtn);
+        });
+
+    </script>
+
+</body>
+</html>
